@@ -3,10 +3,20 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { TodosListComponent } from './components/todos-list/todos-list.component';
+import { TodoDetailsComponent } from './components/todo-details/todo-details.component';
+import { LoginPageComponent } from './components/login-page/login-page.component';
+import { RegisterPageComponent } from './components/register-page/register-page.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    TodosListComponent,
+    TodoDetailsComponent,
+    LoginPageComponent,
+    RegisterPageComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
