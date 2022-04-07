@@ -235,5 +235,9 @@ export class TodosListComponent implements OnInit {
       error: (err) => { }
     })
   }
+  InputCahnge(){
+    this.errorMessage="";
+    this.invalidgroup=false;
+  }
 
 }

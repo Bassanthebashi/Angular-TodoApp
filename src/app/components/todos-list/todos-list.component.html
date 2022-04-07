@@ -80,7 +80,8 @@
                                     <div class="d-block text-left card-footer">
                                         <div class="m-2">
                                             <input type="text" value="" placeholder="What do you want to do?"
-                                                class="m-1" style="width: 350px;" [(ngModel)]="todoToADD">
+                                                class="m-1" style="width: 350px;" [(ngModel)]="todoToADD"
+                                                (input)="InputCahnge()">
                                             <input type="date" id="start" name="trip-start" value="2023-01-1"
                                                 min="{{minimumDatePick}}" style="width: 350px;"
                                                 [(ngModel)]="expectedDate">
@@ -155,7 +156,8 @@
                                             <div class="d-block text-left card-footer">
                                                 <div class="m-2">
                                                     <input type="text" value="" placeholder="What do you want to do?"
-                                                        class="m-1" style="width: 350px;" [(ngModel)]="todoToADD">
+                                                        class="m-1" style="width: 350px;" [(ngModel)]="todoToADD"
+                                                        (input)="InputCahnge()">
                                                     <input type="date" id="start" name="trip-start" value="2023-01-1"
                                                         min="{{minimumDatePick}}" style="width: 350px;"
                                                         [(ngModel)]="expectedDate">
