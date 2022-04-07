@@ -24,6 +24,9 @@ export class TodosListComponent implements OnInit {
   EditTodoWithGroup:any=null;
   invalid: boolean = false;
   errorMessage:any=""
+  invalidgroup: boolean = false;
+  errorgroupMessage:any=""
+  @Input()statusCategorized=false;
   constructor(private http: HttpClientService) { }
 
   ngOnInit(): void {
@@ -56,14 +59,11 @@ export class TodosListComponent implements OnInit {
           this.invalid = false;
         },
         error: (err) => {
-
           this.invalid = true;
           this.errorMessage=err.error.message;
           console.log(this.invalid);
           console.log(this.errorMessage);
           
-          
-        
         }
       })
     }
@@ -182,12 +182,17 @@ export class TodosListComponent implements OnInit {
 
     this.http.AddGroup({ title: this.groupToADD, user: this.user }).subscribe({
       next: (data) => {
+        this.invalidgroup = false;
+
         console.log(data);
         this.AllGroups.push(data.group);
+        this.groupToADD="";
       },
       error: (err) => {
-        console.log(err);
+        this.invalidgroup = true;
+        this.errorgroupMessage=err.error.message;
 
+        
       }
     })
 

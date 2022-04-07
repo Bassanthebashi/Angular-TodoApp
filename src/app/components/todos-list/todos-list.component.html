@@ -2,7 +2,7 @@
     [(ngModel)]="groupToADD">
 <button class="btn btn-primary" (click)="AddGroup()" *ngIf="!EditGroupmode">Add Group</button>
 <button class="btn btn-primary" (click)="UpdateGroup()" *ngIf="EditGroupmode">Update Group</button>
-<!-- <span *ngIf="invalidgroup" style="color: red;">{{errorgroupMessage}}</span> -->
+<p *ngIf="invalidgroup" style="color: red;">{{errorgroupMessage}}</p>
 
 
 
@@ -29,10 +29,17 @@
                     <div class="accordion" id="accordionExample">
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingOne">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                <button *ngIf="!statusCategorized" class="accordion-button" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                                     non categorized todos
                                 </button>
+
+                                <button *ngIf="statusCategorized" class="accordion-button" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    All todos
+                                </button>
+
+
                             </h2>
                             <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
                                 data-bs-parent="#accordionExample">
@@ -92,78 +99,81 @@
                     </div>
                     <div *ngFor="let group of AllGroups">
                         <!-- group -->
-                        <div class="accordion" id="accordionExample">
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="headingTwo">
-                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseOne">
-                                        {{group.title}}
-                                        <button (click)="DeleteGroup(group._id)"
-                                            class="border-0 btn-transition btn btn-outline-danger">
-                                            <i class="fa fa-trash"></i> </button>
-                                        <button (click)="DisplayUpdateGroup(group._id)"
-                                            class="btn btn-secondary">Edit</button>
-                                    </button>
-
-                                </h2>
-                                <div id="collapseTwo" class="accordion-collapse collapse show"
-                                    aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                                    <div class="accordion-body">
-                                        <ul class=" list-group list-group-flush" *ngFor="let todo of group.todos">
-                                            <li class="list-group-item">
-                                                <div class="todo-indicator bg-warning"
-                                                    [ngClass]="{'RedText': todo.status=='Missed', 'GreenText': todo.status=='Completed'}">
-                                                </div>
-                                                <div class="widget-content p-0">
-                                                    <div class="widget-content-wrapper">
-
-                                                        <div class="widget-content-left">
-                                                            <div class="widget-heading">{{todo.title}} <div
-                                                                    class="badge badge-warning ml-2"
-                                                                    [ngClass]="{'RedText': todo.status=='Missed', 'GreenText': todo.status=='Completed'}">
-                                                                    {{todo.status}}</div>
+                        <div *ngIf="!statusCategorized">
+                            <div class="accordion" id="accordionExample">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingTwo">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseOne">
+                                            {{group.title}}
+                                            <button (click)="DeleteGroup(group._id)"
+                                                class="border-0 btn-transition btn btn-outline-danger">
+                                                <i class="fa fa-trash"></i> </button>
+                                            <button (click)="DisplayUpdateGroup(group._id)"
+                                                class="btn btn-secondary">Edit</button>
+                                        </button>
+    
+                                    </h2>
+                                    <div id="collapseTwo" class="accordion-collapse collapse show"
+                                        aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                        <div class="accordion-body">
+                                            <ul class=" list-group list-group-flush" *ngFor="let todo of group.todos">
+                                                <li class="list-group-item">
+                                                    <div class="todo-indicator bg-warning"
+                                                        [ngClass]="{'RedText': todo.status=='Missed', 'GreenText': todo.status=='Completed'}">
+                                                    </div>
+                                                    <div class="widget-content p-0">
+                                                        <div class="widget-content-wrapper">
+    
+                                                            <div class="widget-content-left">
+                                                                <div class="widget-heading">{{todo.title}} <div
+                                                                        class="badge badge-warning ml-2"
+                                                                        [ngClass]="{'RedText': todo.status=='Missed', 'GreenText': todo.status=='Completed'}">
+                                                                        {{todo.status}}</div>
+                                                                </div>
+                                                                <div class="widget-subheading"><i>{{todo.finishingDate}}</i>
+                                                                </div>
                                                             </div>
-                                                            <div class="widget-subheading"><i>{{todo.finishingDate}}</i>
+                                                            <div class="widget-content-right">
+                                                                <button
+                                                                    class="border-0 btn-transition btn btn-outline-success"
+                                                                    (click)="DisplayEditTodo(todo._id, todo.title ,group)">Edit</button>
+                                                                <button
+                                                                    class="border-0 btn-transition btn btn-outline-success"
+                                                                    (click)="UpdateTodoStatus(todo._id,'Completed',group)">
+                                                                    <i class="fa fa-check"></i></button> <button
+                                                                    (click)="DeleteTodo(todo._id,group)"
+                                                                    class="border-0 btn-transition btn btn-outline-danger">
+                                                                    <i class="fa fa-trash"></i> </button>
                                                             </div>
-                                                        </div>
-                                                        <div class="widget-content-right">
-                                                            <button
-                                                                class="border-0 btn-transition btn btn-outline-success"
-                                                                (click)="DisplayEditTodo(todo._id, todo.title ,group)">Edit</button>
-                                                            <button
-                                                                class="border-0 btn-transition btn btn-outline-success"
-                                                                (click)="UpdateTodoStatus(todo._id,'Completed',group)">
-                                                                <i class="fa fa-check"></i></button> <button
-                                                                (click)="DeleteTodo(todo._id,group)"
-                                                                class="border-0 btn-transition btn btn-outline-danger">
-                                                                <i class="fa fa-trash"></i> </button>
                                                         </div>
                                                     </div>
+                                                </li>
+    
+                                            </ul>
+    
+                                            <div class="d-block text-left card-footer">
+                                                <div class="m-2">
+                                                    <input type="text" value="" placeholder="What do you want to do?"
+                                                        class="m-1" style="width: 350px;" [(ngModel)]="todoToADD">
+                                                    <input type="date" id="start" name="trip-start" value="2023-01-1"
+                                                        min="{{minimumDatePick}}" style="width: 350px;"
+                                                        [(ngModel)]="expectedDate">
+    
                                                 </div>
-                                            </li>
-
-                                        </ul>
-
-                                        <div class="d-block text-left card-footer">
-                                            <div class="m-2">
-                                                <input type="text" value="" placeholder="What do you want to do?"
-                                                    class="m-1" style="width: 350px;" [(ngModel)]="todoToADD">
-                                                <input type="date" id="start" name="trip-start" value="2023-01-1"
-                                                    min="{{minimumDatePick}}" style="width: 350px;"
-                                                    [(ngModel)]="expectedDate">
-
+                                                <button class="btn btn-primary" (click)="AddTodo(group._id)">Add
+                                                    Task</button>
+                                                    <span *ngIf="invalid" style="color: red;">{{errorMessage}}</span>
+    
+    
                                             </div>
-                                            <button class="btn btn-primary" (click)="AddTodo(group._id)">Add
-                                                Task</button>
-                                                <span *ngIf="invalid" style="color: red;">{{errorMessage}}</span>
-
-
+    
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        
                         <!-- group -->
                     </div>
 

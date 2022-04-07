@@ -21,9 +21,7 @@
                             <li>
                                 <a href="#" (click)="getTodosByStatus('Pending')" class="nav-link px-0"> <span class="d-none d-sm-inline">Pendig</span></a>
                             </li>
-                            <li>
-                                <a href="#" (click)="getTodayTodos()" class="nav-link px-0"> <span class="d-none d-sm-inline">Schedule</span></a>
-                            </li>
+                            
                             <li>
                                 <a href="#" (click)="logout()" class="nav-link px-0"> <span class="d-none d-sm-inline">Log out</span></a>
                             </li>
@@ -36,7 +34,7 @@
             </div>
         </div>
         <div class="col py-3">
-            <app-todos-list [AllTodos]="AllTodos"></app-todos-list>
+            <app-todos-list [AllTodos]="AllTodos" [statusCategorized]="statusCategorized"></app-todos-list>
         </div>
     </div>
 </div>

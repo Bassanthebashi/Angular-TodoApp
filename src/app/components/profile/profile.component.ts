@@ -10,6 +10,7 @@ import { AuthService } from 'src/app/services/auth.service';
 export class ProfileComponent implements OnInit {
   user: any = '';
   AllTodos:any=""
+  statusCategorized=false;
   constructor(private http: HttpClientService, private router: Router, private auth:AuthService) { }
 
   ngOnInit(): void {
@@ -25,6 +26,7 @@ export class ProfileComponent implements OnInit {
       next:data=>{
         console.log(data.todos);
         this.AllTodos=data.todos
+        this.statusCategorized=true;
       }
     })
   }
@@ -33,6 +35,8 @@ export class ProfileComponent implements OnInit {
       next:data=>{
         console.log(data.todos);
         this.AllTodos=data.todos
+        this.statusCategorized=false;
+
       }
     })
   }
