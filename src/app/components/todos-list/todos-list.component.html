@@ -1,38 +1,171 @@
-<div class="accordion" id="accordionPanelsStayOpenExample">
-    <div class="accordion-item">
-      <h2 class="accordion-header" id="panelsStayOpen-headingOne">
-        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
-          Accordion Item #1
-        </button>
-      </h2>
-      <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
-        <div class="accordion-body">
-          <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+<input type="text" value="" placeholder="Add ne group of todos ex. Be healthier" class="m-1" style="width: 350px;"
+    [(ngModel)]="groupToADD">
+<button class="btn btn-primary" (click)="AddGroup()" *ngIf="!EditGroupmode">Add Group</button>
+<button class="btn btn-primary" (click)="UpdateGroup()" *ngIf="EditGroupmode">Update Group</button>
+
+
+
+<input type="text" value="" placeholder="update" class="m-1" style="width: 350px;" [(ngModel)]="todoToEditTitle"
+    *ngIf="Editmode">
+<input type="date" id="start" name="trip-start" value="2023-01-1" min="{{minimumDatePick}}" style="width: 350px;"
+    [(ngModel)]="expectedDateUpdate" *ngIf="Editmode">
+<button class="btn btn-primary" (click)="EditTodo()" *ngIf="Editmode">Update Task</button>
+
+
+
+<div class="d-flex justify-content-start m-5 align-items-center">
+    <div class="col-md-12 p-5">
+        <div class="card-hover-shadow-2x mb-3 card">
+            <div class="card-header-tab card-header">
+                <div class="card-header-title font-size-lg text-capitalize font-weight-normal"><i
+                        class="fa fa-tasks"></i>&nbsp;Hello {{userName}}</div>
+            </div>
+
+            <div style="position: static;" class="ps ps--active-y">
+                <div class="ps-content">
+                    <!-- general -->
+                    <div class="accordion" id="accordionExample">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    non categorized todos
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                                data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <ul class=" list-group list-group-flush" *ngFor="let todo of AllTodos">
+                                        <li class="list-group-item">
+                                            <div class="todo-indicator bg-warning"
+                                                [ngClass]="{'RedText': todo.status=='Missed', 'GreenText': todo.status=='Completed'}">
+                                            </div>
+                                            <div class="widget-content p-0">
+                                                <div class="widget-content-wrapper">
+
+                                                    <div class="widget-content-left">
+                                                        <div class="widget-heading">{{todo.title}} <div
+                                                                class="badge badge-warning ml-2"
+                                                                [ngClass]="{'RedText': todo.status=='Missed', 'GreenText': todo.status=='Completed'}">
+                                                                {{todo.status}}</div>
+                                                        </div>
+                                                        <div class="widget-subheading"><i>{{todo.finishingDate}}</i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="widget-content-right">
+                                                        <button class="border-0 btn-transition btn btn-outline-success"
+                                                            (click)="DisplayEditTodo(todo._id,todo.title)">Edit</button>
+                                                        <button class="border-0 btn-transition btn btn-outline-success"
+                                                            (click)="UpdateTodoStatus(todo._id,'Completed')">
+                                                            <i class="fa fa-check"></i></button> <button
+                                                            (click)="DeleteTodo(todo._id)"
+                                                            class="border-0 btn-transition btn btn-outline-danger"> <i
+                                                                class="fa fa-trash"></i> </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                    </ul>
+
+                                    <div class="d-block text-left card-footer">
+                                        <div class="m-2">
+                                            <input type="text" value="" placeholder="What do you want to do?"
+                                                class="m-1" style="width: 350px;" [(ngModel)]="todoToADD">
+                                            <input type="date" id="start" name="trip-start" value="2023-01-1"
+                                                min="{{minimumDatePick}}" style="width: 350px;"
+                                                [(ngModel)]="expectedDate">
+
+                                        </div>
+                                        <button class="btn btn-primary" (click)="AddTodo()">Add
+                                            Task</button>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngFor="let group of AllGroups">
+                        <!-- group -->
+                        <div class="accordion" id="accordionExample">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingTwo">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseOne">
+                                        {{group.title}}
+                                        <button (click)="DeleteGroup(group._id)"
+                                            class="border-0 btn-transition btn btn-outline-danger">
+                                            <i class="fa fa-trash"></i> </button>
+                                        <button (click)="DisplayUpdateGroup(group._id)"
+                                            class="btn btn-secondary">Edit</button>
+                                    </button>
+
+                                </h2>
+                                <div id="collapseTwo" class="accordion-collapse collapse show"
+                                    aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        <ul class=" list-group list-group-flush" *ngFor="let todo of group.todos">
+                                            <li class="list-group-item">
+                                                <div class="todo-indicator bg-warning"
+                                                    [ngClass]="{'RedText': todo.status=='Missed', 'GreenText': todo.status=='Completed'}">
+                                                </div>
+                                                <div class="widget-content p-0">
+                                                    <div class="widget-content-wrapper">
+
+                                                        <div class="widget-content-left">
+                                                            <div class="widget-heading">{{todo.title}} <div
+                                                                    class="badge badge-warning ml-2"
+                                                                    [ngClass]="{'RedText': todo.status=='Missed', 'GreenText': todo.status=='Completed'}">
+                                                                    {{todo.status}}</div>
+                                                            </div>
+                                                            <div class="widget-subheading"><i>{{todo.finishingDate}}</i>
+                                                            </div>
+                                                        </div>
+                                                        <div class="widget-content-right">
+                                                            <button
+                                                                class="border-0 btn-transition btn btn-outline-success"
+                                                                (click)="DisplayEditTodo(todo._id, todo.title ,group)">Edit</button>
+                                                            <button
+                                                                class="border-0 btn-transition btn btn-outline-success"
+                                                                (click)="UpdateTodoStatus(todo._id,'Completed',group)">
+                                                                <i class="fa fa-check"></i></button> <button
+                                                                (click)="DeleteTodo(todo._id,group)"
+                                                                class="border-0 btn-transition btn btn-outline-danger">
+                                                                <i class="fa fa-trash"></i> </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+
+                                        </ul>
+
+                                        <div class="d-block text-left card-footer">
+                                            <div class="m-2">
+                                                <input type="text" value="" placeholder="What do you want to do?"
+                                                    class="m-1" style="width: 350px;" [(ngModel)]="todoToADD">
+                                                <input type="date" id="start" name="trip-start" value="2023-01-1"
+                                                    min="{{minimumDatePick}}" style="width: 350px;"
+                                                    [(ngModel)]="expectedDate">
+
+                                            </div>
+                                            <button class="btn btn-primary" (click)="AddTodo(group._id)">Add
+                                                Task</button>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- group -->
+                    </div>
+
+
+                </div>
+            </div>
+
+
         </div>
-      </div>
     </div>
-    <div class="accordion-item">
-      <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
-          Accordion Item #2
-        </button>
-      </h2>
-      <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingTwo">
-        <div class="accordion-body">
-          <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-        </div>
-      </div>
-    </div>
-    <div class="accordion-item">
-      <h2 class="accordion-header" id="panelsStayOpen-headingThree">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
-          Accordion Item #3
-        </button>
-      </h2>
-      <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingThree">
-        <div class="accordion-body">
-          <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-        </div>
-      </div>
-    </div>
-  </div>
+</div>

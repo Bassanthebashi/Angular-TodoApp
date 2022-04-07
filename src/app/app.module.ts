@@ -8,6 +8,11 @@ import { TodoDetailsComponent } from './components/todo-details/todo-details.com
 import { LoginPageComponent } from './components/login-page/login-page.component';
 import { RegisterPageComponent } from './components/register-page/register-page.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { HttpClientService } from './services/http-client.service';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { AuthService } from './services/auth.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 
 @NgModule({
   declarations: [
@@ -20,9 +25,13 @@ import { ProfileComponent } from './components/profile/profile.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
+
   ],
-  providers: [],
+  providers: [HttpClientService,HttpClient,AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -169,3 +169,11 @@ i {
 .card-footer {
     background-color: #fff
 }
+.GreenText{
+    background-color: green !important;
+
+}
+.RedText{
+    background-color: red !important;
+  
+}
