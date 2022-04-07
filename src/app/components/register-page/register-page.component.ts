@@ -10,6 +10,8 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class RegisterPageComponent implements OnInit {
   registerForm:any=FormGroup;
+  invalidLogin: boolean = false;
+  errorMessage:any=""
   constructor( private FB:FormBuilder,private auth:AuthService,private router:Router) { }
 
   ngOnInit(): void {
@@ -18,6 +20,7 @@ export class RegisterPageComponent implements OnInit {
       email:['', Validators.compose([Validators.required,Validators.email])],
       password:['', Validators.required],
     })
+    
   }
 signup(){
   if(this.registerForm.status==='VALID'){
@@ -25,9 +28,17 @@ signup(){
     
     this.auth.register(this.registerForm.value).subscribe({
       next:(res)=>{
+        this.invalidLogin=false;
         console.log(res);
         
         this.router.navigate(['signin']);
+      },
+      error: (err) => {
+        console.log(err);
+        
+        this.invalidLogin = true;
+        this.errorMessage=err.error.message;
+      
       }
     })
   }

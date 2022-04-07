@@ -22,6 +22,8 @@ export class TodosListComponent implements OnInit {
   todoToEditTitle:any=""
   expectedDateUpdate:any=""
   EditTodoWithGroup:any=null;
+  invalid: boolean = false;
+  errorMessage:any=""
   constructor(private http: HttpClientService) { }
 
   ngOnInit(): void {
@@ -50,24 +52,40 @@ export class TodosListComponent implements OnInit {
         next: (data) => {
           console.log(data);
           this.AllTodos.push(data.todo);
+          this.todoToADD=""
+          this.invalid = false;
         },
         error: (err) => {
-          console.log(err);
 
+          this.invalid = true;
+          this.errorMessage=err.error.message;
+          console.log(this.invalid);
+          console.log(this.errorMessage);
+          
+          
+        
         }
       })
     }
     else {
       this.http.AddTodo({ title: this.todoToADD, user: this.user, finishingDate: this.expectedDate, group: group }).subscribe({
         next: (data) => {
+          this.invalid = false;
+
           console.log(data);
           this.AllGroups.forEach((el: any) => {
             if (el._id == group) el.todos.push(data.todo);
           })
         },
         error: (err) => {
-          console.log(err);
 
+          this.invalid = true;
+          this.errorMessage=err.error.message;
+          console.log(this.invalid);
+          console.log(this.errorMessage);
+          
+          
+        
         }
       })
     }

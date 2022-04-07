@@ -6,18 +6,26 @@
             <div class="signup-content">
                 <div class="signup-form">
                     <h2 class="form-title">Sign up</h2>
-                    <form  class="register-form" id="register-form" [formGroup]="registerForm">
+                    <form  class="register-form" id="register-form" [formGroup]="registerForm" >
                         <div class="form-group">
                             <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
                             <input type="text" name="name" id="name" placeholder="Your Name" formControlName="name"/>
+                            <span *ngIf="registerForm.controls['name'].errors?.required && registerForm.controls['name'].touched" style="color: red;">This field is required</span>
+                            
                         </div>
                         <div class="form-group">
                             <label for="email"><i class="zmdi zmdi-email"></i></label>
                             <input type="email" name="email" id="email" placeholder="Your Email" formControlName="email"/>
+                            <span *ngIf="registerForm.controls['email'].errors?.required && registerForm.controls['email'].touched" style="color: red;">This field is required</span>
+                            <span *ngIf="registerForm.controls['email'].errors?.patterns && registerForm.controls['emal'].touched" style="color: red;">This field is required</span>
+
                         </div>
                         <div class="form-group">
                             <label for="pass"><i class="zmdi zmdi-lock"></i></label>
                             <input type="password" name="pass" id="pass" placeholder="Password" formControlName="password"/>
+                            <span *ngIf="registerForm.controls['password'].errors?.required && registerForm.controls['password'].touched" style="color: red;">This field is required</span>
+                            <span *ngIf="invalidLogin" style="color: red;">{{errorMessage}}</span>
+
                         </div>
                         <!-- <div class="form-group">
                             <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>

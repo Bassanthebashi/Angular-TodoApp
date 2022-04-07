@@ -10,8 +10,10 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class LoginPageComponent implements OnInit {
   invalidLogin: boolean = false;
+  errorMessage:any=""
   returnedurl: any;
   loginForm:any = FormGroup;
+
   constructor(private FB: FormBuilder, private auth: AuthService, private router: Router, private route: ActivatedRoute) {
 
   }
@@ -22,19 +24,24 @@ export class LoginPageComponent implements OnInit {
       password: ['', Validators.required],
     })
   }
-  SignIn() {
-    console.log(this.loginForm.value);
-    
+  SignIn() {    
     if (this.loginForm.status === 'VALID') {
       this.auth.Login(this.loginForm.value).subscribe(
         {
           next: (res: any) => {
+            this.invalidLogin = false;
             console.log(res);
             localStorage.setItem('userID', res.user._id);
             localStorage.setItem('token', res.token);
             this.router.navigate([this.returnedurl || '']);
           },
-          error: () => this.invalidLogin = true
+          error: (err) => {
+            console.log(err);
+            
+            this.invalidLogin = true;
+            this.errorMessage=err.error.message;
+          
+          }
         })
     }
 
